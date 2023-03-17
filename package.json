@@ -1,6 +1,8 @@
 {
     "private": true,
     "dependencies": {
+        "annyang": "^2.6.1",
+        "sweetalert2": "^11.7.3",
         "vue": "^3.2.36"
     },
     "devDependencies": {
