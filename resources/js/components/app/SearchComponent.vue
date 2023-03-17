@@ -60,11 +60,11 @@
     </form>
 </template>
 <script>
-import {swal} from "../../common/functions";
+import {consumeAPI, openSwal, openSwalVerifyStatus, swal} from "../../common/functions";
 import annyang from "annyang";
 
 export default {
-    props: ['customParentClass', 'results', 'languageAnnyang'],
+    props: ['customParentClass', 'results', 'languageAnnyang', 'CSRF'],
     data: () => ({
         name: '',
         percentMatch: 0
@@ -82,28 +82,41 @@ export default {
     methods: {
         cleanAndCapitalize: (str) => str.replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s]/g, '').replace(/\s+/g, ' ').trim().replace(/(?:^|\s)\S/g, (a) => a.toUpperCase()),
         fixedPercentMatch: function (event) {
-            const newValue = parseInt(event.target.value);
-            this.percentMatch = isNaN(newValue) ? 0 : Math.max(0, Math.min(100, newValue));
+            if (event.target.value !== '') {
+                const newValue = parseInt(event.target.value);
+                this.percentMatch = isNaN(newValue) ? 0 : Math.max(0, Math.min(100, newValue));
+            } else this.percentMatch = ''
         },
-        onSubmit: function () {
+        onSubmit: async function () {
             if (!this.name.trim())
-                swal.fire(
+                await swal.fire(
                     'Nombre invalido',
                     'El nombre no puede estar vacío',
                     'error'
                 );
+            else if (this.percentMatch === '')
+                await swal.fire(
+                    'El porcentaje de coincidencia no puede estar vacío',
+                    '',
+                    'error'
+                );
             else if (this.percentMatch < 0 || this.percentMatch > 100)
-                swal.fire(
+                await swal.fire(
                     'Porcentaje de coincidencia invalido',
                     'El porcentaje debe encontrarse en un rango entre 0 y 100',
                     'error'
                 );
-            else this.$emit('results', {
-                    [this.name]: {
-                        percentMatch: this.percentMatch,
-                        results: [0, 1, 2]
-                    }
-                });
+            else {
+                const searchLog = async () => await consumeAPI(this.CSRF, `search_log`, 'POST', {
+                    name: this.name,
+                    percent_match: this.percentMatch
+                }).then((response) => openSwalVerifyStatus(response).then(async (statusResponse) => {
+                    if (statusResponse === 'success')
+                        this.$emit('results', response);
+                    else this.$emit('results', {});
+                }));
+                await openSwal({titleSwal: 'Realizando busqueda...', callbackAPIs: [searchLog], mode: 'loading'});
+            }
         },
         activeHandleSpeech: function () {
             const currentFill = document.getElementById('microphone').getAttribute('fill');
@@ -118,11 +131,18 @@ export default {
             }
         }
     },
-    mounted() {
-        if (Object.keys(this.results).length) {
-            this.name = Object.keys(this.results)[0];
-            this.percentMatch = this.results[this.name]['percentMatch'];
+    watch: {
+        results: {
+            handler(newResults) {
+                if (Object.keys(this.results).length) {
+                    this.name = newResults.searched_name;
+                    this.percentMatch = newResults.percentage_match;
+                }
+            },
+            immediate: true,
         }
+    },
+    mounted() {
         annyang.setLanguage(this.languageAnnyang);
         annyang.addCallback("result", (results) => {
             const transcript = results[0];

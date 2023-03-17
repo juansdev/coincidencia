@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SearchLogController;
+use App\Http\Controllers\SearchLogPersonPublicController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 });
+
+Route::get('CSRF', function () {
+    return response()->json(['csrf' => csrf_token()]);
+});
+
+Route::get('/search_log', [SearchLogController::class, 'index']);
+Route::post('/search_log', [SearchLogController::class, 'store']);
+
+Route::get('/get_person_public_by_search_log', [SearchLogPersonPublicController::class, 'getPersonPublicBySearchLog']);

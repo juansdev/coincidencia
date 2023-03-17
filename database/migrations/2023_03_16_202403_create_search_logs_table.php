@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('uuid')->unique();
             $table->string('searched_name');
-            $table->decimal('percentage_sought', 13, 3);
+            $table->decimal('percentage_match', 13, 3);
             $table->enum('execution_status', ["records_found", "no_matches", "system_error"]);
             $table->timestamps();
         });

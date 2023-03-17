@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static create(array $personPublic)
+ * @method static where(string $string, mixed $name)
+ * @method static select(string $string)
  */
 class PersonPublic extends Model
 {

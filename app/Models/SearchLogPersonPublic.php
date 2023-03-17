@@ -17,7 +17,7 @@ class SearchLogPersonPublic extends Model
 
     public function personPublic(): BelongsTo
     {
-        return $this->belongsTo(PersonPublic::class);
+        return $this->belongsTo(PersonPublic::class)->with(['department', 'municipality', 'location', 'typePerson', 'typePosition']);
     }
 
     public function searchLog(): BelongsTo
