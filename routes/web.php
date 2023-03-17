@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchLogController;
 use App\Http\Controllers\SearchLogPersonPublicController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('app');
+    return redirect('/home');
 });
-
-Route::get('CSRF', function () {
-    return response()->json(['csrf' => csrf_token()]);
-});
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Auth::routes();
 
 Route::get('/search_log', [SearchLogController::class, 'index']);
 Route::post('/search_log', [SearchLogController::class, 'store']);
