@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Auth::routes();
 
-Route::get('/search_log', [SearchLogController::class, 'index']);
-Route::post('/search_log', [SearchLogController::class, 'store']);
+Route::get('/search-log', [SearchLogController::class, 'index']);
+Route::post('/search-log', [SearchLogController::class, 'store']);
 
-Route::get('/get_person_public_by_search_log', [SearchLogPersonPublicController::class, 'getPersonPublicBySearchLog']);
+Route::get('/get-person-public-by-search-log', [SearchLogPersonPublicController::class, 'getPersonPublicBySearchLog']);

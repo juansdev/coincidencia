@@ -46,7 +46,7 @@ export default {
     }),
     watch: {
         searchHistoricalUUID: function (newSearchHistoricalUUID) {
-            const getPersonPublicBySearchLog = () => consumeAPI(this.CSRF, `get_person_public_by_search_log?uuid=${newSearchHistoricalUUID}`, 'GET').then(async results => {
+            const getPersonPublicBySearchLog = () => consumeAPI(this.CSRF, `get-person-public-by-search-log?uuid=${newSearchHistoricalUUID}`, 'GET').then(async results => {
                 this.results = results;
             });
             openSwal({
@@ -57,7 +57,7 @@ export default {
         }
     },
     mounted() {
-        consumeAPI(this.CSRF, `search_log`, 'GET').then(async res => {
+        consumeAPI(this.CSRF, `search-log`, 'GET').then(async res => {
             const {data} = res;
             this.listSearchHistorical = data;
         });

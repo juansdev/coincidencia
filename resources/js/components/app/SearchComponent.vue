@@ -107,7 +107,7 @@ export default {
                     'error'
                 );
             else {
-                const searchLog = async () => await consumeAPI(this.CSRF, `search_log`, 'POST', {
+                const searchLog = async () => await consumeAPI(this.CSRF, `search-log`, 'POST', {
                     name: this.name,
                     percent_match: this.percentMatch
                 }).then((response) => openSwalVerifyStatus(response).then(async (statusResponse) => {
