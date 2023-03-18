@@ -1,66 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Proyecto Calculadora de Coincidencias
+===============================================================================
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto consiste en el desarrollo de un sistema que permita validar nombres de personas contra una base de datos
+de personas públicas. El sistema está compuesto por un algoritmo de comparación de nombres expuesto como servicio REST y
+una interfaz web que permita el consumo del web service para realizar búsquedas individuales y dispone de un historial
+de
+consultas realizadas.
 
-## About Laravel
+Interfaz Web
+------------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+La interfaz web permite realizar búsquedas por nombre, modificar el porcentaje de coincidencias mínimo que se desea
+obtener y revisar el historial de consultas.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Algoritmo de Comparación de Nombres
+-----------------------------------
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+El algoritmo de comparación de nombres recibe como parámetros los nombres y apellidos en un solo campo de la persona que
+se debe validar y el porcentaje de coincidencia mínimo que se espera como respuesta. La respuesta del servicio será un
+porcentaje de coincidencia (0 a 100) de los resultados encontrados según el umbral definido. El servicio debe
+autenticarse utilizando JWT (JSON Web Token).
 
-## Learning Laravel
+El algoritmo utiliza el servicio NameComparisonService para comparar la similitud entre dos nombres. El servicio usa el
+algoritmo Jaro-Winkler para calcular la diferencia entre los dos nombres y devuelve el porcentaje de similitud entre 0 y
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+100.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Antes de comparar los nombres, normaliza los caracteres de los nombres (por ejemplo, convirtiendo a minúsculas y
+eliminando acentos), elimina los caracteres no alfanuméricos y espacios adicionales.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Este servicio es útil para comparar nombres en diferentes escenarios, como verificar si dos nombres pertenecen a la
+misma persona o detectar duplicados en una base de datos.
 
-## Laravel Sponsors
+El algoritmo devuelve un mensaje en caso de error, si hay un resultado o si no se encuentran resultados.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Posibles soluciones para escalar más el algoritmo
+------------
 
-### Premium Partners
+Para mejorar aún más la escalabilidad del algoritmo, se podría considerar lo siguiente:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+1. Agregar índices en la tabla PersonPublic para acelerar la búsqueda por nombre. Esto permitiría que la búsqueda sea
+   más rápida y eficiente cuando el número de registros aumenta.
 
-## Contributing
+2. En lugar de recuperar todos los registros de la tabla PersonPublic en una sola consulta, se podría dividir la
+   búsqueda en lotes de registros. Esto reduciría la cantidad de memoria utilizada durante la búsqueda, especialmente si
+   la tabla de PersonPublic contiene millones de registros.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Utilizar un algoritmo de búsqueda más rápido y escalable, como Elasticsearch o Apache Solr, para buscar registros por
+   nombre. Estos sistemas de búsqueda están diseñados específicamente para manejar grandes volúmenes de datos y pueden
+   buscar registros mucho más rápido que la base de datos tradicional.
 
-## Code of Conduct
+4. Utilizar técnicas de procesamiento de lenguaje natural, como word embeddings y similarity matrices, para mejorar la
+   precisión de la comparación de nombres. Estas técnicas usan modelos de lenguaje para comparar nombres en función de
+   su similitud semántica, lo que puede ser útil para manejar variaciones en la ortografía o errores tipográficos en los
+   nombres.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Utilizar técnicas de procesamiento paralelo y distribuido para acelerar la búsqueda. Esto podría involucrar el uso de
+   múltiples servidores o máquinas virtuales para ejecutar la búsqueda en paralelo, o la implementación de un sistema
+   distribuido usando tecnologías como Apache Kafka o RabbitMQ.
 
-## Security Vulnerabilities
+Instalación y Ejecución
+=========================================================
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Prerrequisitos
+--------------
 
-## License
+Antes de empezar, debes tener instalado lo siguiente:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* [Composer](https://getcomposer.org/)
+* [Node.js y npm](https://nodejs.org/)
+* [MySQL](https://www.mysql.com/)
+* [PHP 8](https://www.php.net/)
+
+Pasos para desplegar el proyecto
+--------------------------------
+
+1. Clona el repositorio del proyecto en tu máquina local.
+
+2. Abre una terminal y navega hasta la carpeta del proyecto.
+
+3. Instala las dependencias de PHP utilizando Composer:
+
+   `composer install`
+
+4. Crea una copia del archivo `.env.example` y renómbrala a `.env`.
+
+5. Genera una clave de aplicación Laravel ejecutando el siguiente comando:
+
+   `php artisan key:generate`
+
+6. Configura las variables globales del `.env` para la conexión a la base de datos y para la configuración de correo
+   electrónico de Gmail. Para la configuración de correo electrónico de Gmail, asegúrate de proporcionar la dirección de
+   correo electrónico y la contraseña correcta.
+
+7. Verificar que todos los tests pasen correctamente. Para ello, ejecute el siguiente comando:
+
+`php artisan test`
+
+8. Si todos los tests pasan correctamente, ejecute los seeders para poblar la base de datos:
+
+`php artisan migrate:fresh --seed`
+
+9. Instala las dependencias de Node.js utilizando npm:
+
+   `npm install`
+
+10. Compila los assets con Laravel Mix utilizando el siguiente comando:
+
+`npm run dev`
+
+11. Ejecuta el servidor de desarrollo de Laravel:
+
+`php artisan serve`
+
+12. Abre el navegador y navega a la dirección `http://localhost:8000`.

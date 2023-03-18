@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 class NameComparisonService
 {
     /**
-     * Compare two names and return the percentage of similarity.
+     * Compara dos nombres y retorna el porcentaje de coincidencias.
      *
      * @param string $name1
      * @param string $name2
@@ -18,20 +18,20 @@ class NameComparisonService
         $name1 = $this->normalizeString($name1);
         $name2 = $this->normalizeString($name2);
 
-        // Calculate the Jaro distance between the names
+        // Calcula la distancia Jaro entre los nombres
         $jaroDistance = similar_text($name1, $name2) / 100;
 
-        // Calculate the length of the common prefix between the names
+        // Calcula la longitud del prefijo común entre los nombre
         $prefixLength = 0;
         $maxLength = max(strlen($name1), strlen($name2));
         for ($i = 0; $i < $maxLength && isset($name1[$i]) && isset($name2[$i]) && $name1[$i] === $name2[$i]; $i++) {
             $prefixLength++;
         }
 
-        // Calculate the Jaro-Winkler distance between the names with a prefix weight of 0.05
+        // Calcula la distancia Jaro-Winkler entre los nombres con un ancho del prefijo de 0.05
         $jaroWinklerDistance = $jaroDistance + ($prefixLength * 0.05 * (1 - $jaroDistance));
 
-        // Calculate the percentage of similarity and constrain it to the range of 0 to 100
+        // Calcula el porcentaje de coincidencias y restringirlo a un rango entre 0 y 100
         $similarityPercentage = $jaroWinklerDistance * 100;
         return max(0, min(100, $similarityPercentage));
     }

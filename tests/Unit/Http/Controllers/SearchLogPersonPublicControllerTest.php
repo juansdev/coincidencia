@@ -30,7 +30,7 @@ class SearchLogPersonPublicControllerTest extends TestCase
             'percentage_match' => 80
         ]);
 
-        $searchLogPersonPublic = SearchLogPersonPublic::factory()->create([
+        SearchLogPersonPublic::factory()->create([
             'search_log_id' => $searchLog->id,
             'person_public_id' => $personPublic->id
         ]);
@@ -49,7 +49,6 @@ class SearchLogPersonPublicControllerTest extends TestCase
     /** @test */
     public function it_returns_a_json_response_with_no_matches_when_search_log_has_no_matches()
     {
-        // Create a search log with no matches
         $searchLog = SearchLog::factory()->create([
             'uuid' => 'abc123',
             'searched_name' => 'Foo',
@@ -57,13 +56,10 @@ class SearchLogPersonPublicControllerTest extends TestCase
             'execution_status' => 'no_matches',
         ]);
 
-        // Make a request to the endpoint with the UUID of the search log
         $response = $this->getJson("/get-person-public-by-search-log?uuid={$searchLog->uuid}");
 
-        // Assert that the response has the correct status code
         $response->assertStatus(200);
 
-        // Assert that the response has the correct JSON structure and values
         $response->assertJson([
             'uuid' => 'abc123',
             'searched_name' => 'Foo',

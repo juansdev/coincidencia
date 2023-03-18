@@ -13,11 +13,6 @@ class SearchLogControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Test store method with a search that returns matches
-     *
-     * @return void
-     */
     public function testStoreMethodWithMatches(): void
     {
         $personPublic = PersonPublic::factory()->create([
@@ -51,11 +46,6 @@ class SearchLogControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test store method with a search that returns no matches
-     *
-     * @return void
-     */
     public function testStoreMethodWithNoMatches(): void
     {
         $response = $this->postJson('/search-log', [
@@ -79,11 +69,6 @@ class SearchLogControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test store method with invalid input
-     *
-     * @return void
-     */
     public function testStoreMethodWithInvalidInput(): void
     {
         $response = $this->postJson('/search-log', [

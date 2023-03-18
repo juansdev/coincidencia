@@ -14,11 +14,6 @@ class ResetPasswordControllerTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /**
-     * Test reset password page is displayed when valid token is present
-     *
-     * @return void
-     */
     public function testResetPasswordPageIsDisplayedWhenValidTokenIsPresent()
     {
         $user = User::factory()->create();
@@ -31,11 +26,6 @@ class ResetPasswordControllerTest extends TestCase
         $response->assertViewHas('token', $token);
     }
 
-    /**
-     * Test reset password with valid credentials
-     *
-     * @return void
-     */
     public function testResetPasswordWithValidCredentials()
     {
         $user = User::factory()->create();
@@ -57,11 +47,6 @@ class ResetPasswordControllerTest extends TestCase
         );
     }
 
-    /**
-     * Test reset password with invalid token
-     *
-     * @return void
-     */
     public function testResetPasswordWithInvalidToken()
     {
         $user = User::factory()->create();
@@ -77,11 +62,6 @@ class ResetPasswordControllerTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
-    /**
-     * Test reset password with invalid email
-     *
-     * @return void
-     */
     public function testResetPasswordWithInvalidEmail()
     {
         $user = User::factory()->create();
