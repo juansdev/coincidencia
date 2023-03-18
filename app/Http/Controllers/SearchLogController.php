@@ -49,21 +49,11 @@ class SearchLogController extends Controller
                 'message' => $validator->errors()->first()
             ], 422);
 
-        // Limpieza y normalización de nombres
-        $searchedName = trim(strtoupper($request->input('name')));
-        $searchedName = str_replace(['Á', 'É', 'Í', 'Ó', 'Ú'], ['A', 'E', 'I', 'O', 'U'], $searchedName);
-        $searchedName = preg_replace('/\s+/', ' ', $searchedName);
-
         // Buscamos las personas públicas que coincidan
         $personPublics = PersonPublic::with(['department', 'municipality', 'location', 'typePerson', 'typePosition'])->get();
         $matches = [];
         foreach ($personPublics as $personPublic) {
-            // Limpieza y normalización de nombres
-            $personName = trim(strtoupper($personPublic->name));
-            $personName = str_replace(['Á', 'É', 'Í', 'Ó', 'Ú'], ['A', 'E', 'I', 'O', 'U'], $personName);
-            $personName = preg_replace('/\s+/', ' ', $personName);
-
-            $percentMatch = $this->nameComparisonService->compareNames($searchedName, $personName);
+            $percentMatch = $this->nameComparisonService->compareNames($request->input('name'), $personPublic->name);
 
             if ($percentMatch >= $request->input('percent_match'))
                 $matches[] = [

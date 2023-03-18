@@ -34,6 +34,7 @@ export const openSwal = async ({titleSwal, callbackAPIs, mode, response, showOnl
         } else if (response.status >= 500 && response.status <= 599) {
             successStatus = false;
             options['title'] = '¡Error del servidor!';
+            options['html'] = 'Por favor contactar con el Administrador';
             options['icon'] = 'error';
         }
         if (showOnlyError && !successStatus) return await MySwal.fire(options).then(() => options['icon']);

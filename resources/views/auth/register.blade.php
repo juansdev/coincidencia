@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="h-screen flex items-center justify-center">
-        <div class="w-full max-w-md bg-white p-5 rounded-lg lg:rounded-l-none">
-            <h3 class="pt-4 text-2xl text-center">{{ __('Register') }}</h3>
-            <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" method="POST" action="{{ route('register') }}">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+            <div class="mb-4 font-bold text-xl">{{ __('Register') }}</div>
+            <form class="flex flex-col" method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-bold text-gray-700" for="name">

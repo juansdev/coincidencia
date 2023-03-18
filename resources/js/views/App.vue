@@ -4,7 +4,7 @@
     <Navbar :CSRF="CSRF">
         <button
             aria-controls="drawer-navigation"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white md:text-white md:bg-blue-700 md:hover:bg-blue-800 md:focus:ring-4 md:focus:ring-blue-300 md:font-medium md:rounded-lg text-sm md:px-5 md:py-2.5 md:mr-2 md:dark:bg-blue-600 md:dark:hover:bg-blue-700 md:focus:outline-none md:dark:focus:ring-blue-800"
             data-drawer-show="drawer-navigation" data-drawer-target="drawer-navigation"
             type="button">
             Historial de consultas
