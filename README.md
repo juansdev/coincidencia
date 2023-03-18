@@ -22,9 +22,7 @@ porcentaje de coincidencia (0 a 100) de los resultados encontrados según el umb
 autenticarse utilizando JWT (JSON Web Token).
 
 El algoritmo utiliza el servicio NameComparisonService para comparar la similitud entre dos nombres. El servicio usa el
-algoritmo Jaro-Winkler para calcular la diferencia entre los dos nombres y devuelve el porcentaje de similitud entre 0 y
-
-100.
+algoritmo Jaro-Winkler para calcular la diferencia entre los dos nombres y devuelve el porcentaje de similitud entre 0 y 100.
 
 Antes de comparar los nombres, normaliza los caracteres de los nombres (por ejemplo, convirtiendo a minúsculas y
 eliminando acentos), elimina los caracteres no alfanuméricos y espacios adicionales.
@@ -68,9 +66,9 @@ Prerrequisitos
 Antes de empezar, debes tener instalado lo siguiente:
 
 * [Composer](https://getcomposer.org/)
-* [Node.js y npm](https://nodejs.org/)
+* [Node.js 16^ y npm](https://nodejs.org/)
 * [MySQL](https://www.mysql.com/)
-* [PHP 8](https://www.php.net/)
+* [PHP 8^](https://www.php.net/)
 
 Pasos para desplegar el proyecto
 --------------------------------
