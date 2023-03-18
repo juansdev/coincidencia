@@ -17,7 +17,7 @@ class SearchLog extends Model
     protected $fillable = [
         'uuid',
         'searched_name',
-        'percentage_match',
+        'percent_match',
         'execution_status'
     ];
 

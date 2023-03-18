@@ -27,7 +27,7 @@ class SearchLogPersonPublicControllerTest extends TestCase
 
         $searchLog = SearchLog::factory()->create([
             'searched_name' => 'John',
-            'percentage_match' => 80
+            'percent_match' => 80
         ]);
 
         SearchLogPersonPublic::factory()->create([
@@ -40,7 +40,7 @@ class SearchLogPersonPublicControllerTest extends TestCase
         $response->assertJsonFragment([
             'uuid' => $searchLog->uuid,
             'searched_name' => $searchLog->searched_name,
-            'percentage_match' => $searchLog->percentage_match,
+            'percent_match' => $searchLog->percent_match,
             'execution_status' => 'records_found',
             'message' => 'Se encontraron 1 resultados.'
         ]);
@@ -52,7 +52,7 @@ class SearchLogPersonPublicControllerTest extends TestCase
         $searchLog = SearchLog::factory()->create([
             'uuid' => 'abc123',
             'searched_name' => 'Foo',
-            'percentage_match' => 80,
+            'percent_match' => 80,
             'execution_status' => 'no_matches',
         ]);
 
@@ -63,7 +63,7 @@ class SearchLogPersonPublicControllerTest extends TestCase
         $response->assertJson([
             'uuid' => 'abc123',
             'searched_name' => 'Foo',
-            'percentage_match' => 80,
+            'percent_match' => 80,
             'execution_status' => 'no_matches',
             'matches' => [],
             'message' => 'No se han encontrado resultados para tu búsqueda (Foo).',

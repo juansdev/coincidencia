@@ -19,6 +19,7 @@ class SearchLogPersonPublicFactory extends Factory
     public function definition(): array
     {
         return [
+            'percent_match' => $this->faker->randomNumber(),
             'search_log_id' => function () {
                 return SearchLog::factory()->create()->id;
             },

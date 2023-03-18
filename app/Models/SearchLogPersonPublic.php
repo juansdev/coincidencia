@@ -12,7 +12,8 @@ class SearchLogPersonPublic extends Model
 
     protected $fillable = [
         'search_log_id',
-        'person_public_id'
+        'person_public_id',
+        'percent_match'
     ];
 
     public function personPublic(): BelongsTo

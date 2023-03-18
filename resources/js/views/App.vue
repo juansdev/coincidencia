@@ -17,12 +17,12 @@
              class="md:w-3/6 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <Search :CSRF="CSRF"
                     :customParentClass="searchCustomParentClass" :results="results" languageAnnyang="es-ES"
-                    @results="(newResults)=>{results=newResults}"></Search>
+                    @results="updateResults"></Search>
         </div>
         <Table v-if="Object.keys(results).length" :listData="results?.matches">
             <Search :CSRF="CSRF"
                     :customParentClass="searchCustomParentClass" :results="results" languageAnnyang="es-ES"
-                    @results="(newResults)=>{results=newResults}"></Search>
+                    @results="updateResults"></Search>
         </Table>
     </div>
 </template>
@@ -44,6 +44,14 @@ export default {
         listSearchHistorical: [],
         searchHistoricalUUID: undefined
     }),
+    methods: {
+        updateResults(newResults) {
+            this.results = newResults;
+            const {uuid, searched_name, percent_match, execution_status} = newResults;
+            if (uuid)
+                this.listSearchHistorical.push({uuid, searched_name, percent_match, execution_status});
+        }
+    },
     watch: {
         searchHistoricalUUID: function (newSearchHistoricalUUID) {
             const getPersonPublicBySearchLog = () => consumeAPI(this.CSRF, `get-person-public-by-search-log?uuid=${newSearchHistoricalUUID}`, 'GET').then(async results => {
@@ -54,7 +62,7 @@ export default {
                 callbackAPIs: [getPersonPublicBySearchLog],
                 mode: 'loading'
             });
-        }
+        },
     },
     mounted() {
         consumeAPI(this.CSRF, `search-log`, 'GET').then(async res => {

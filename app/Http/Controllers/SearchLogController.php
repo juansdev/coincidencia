@@ -69,7 +69,7 @@ class SearchLogController extends Controller
         $searchLog = new SearchLog([
             'uuid' => $uuid,
             'searched_name' => $request->input('name'),
-            'percentage_match' => $request->input('percent_match'),
+            'percent_match' => $request->input('percent_match'),
             'execution_status' => $executionStatus
         ]);
         $searchLog->save();
@@ -79,6 +79,7 @@ class SearchLogController extends Controller
             $searchLogPersonPublic = new SearchLogPersonPublic();
             $searchLogPersonPublic->search_log_id = $searchLog->id;
             $searchLogPersonPublic->person_public_id = PersonPublic::where('name', $match['person_public']->name)->first()->id;
+            $searchLogPersonPublic->percent_match = $match['percent_match'];
             $searchLogPersonPublic->save();
         }
 
@@ -86,7 +87,7 @@ class SearchLogController extends Controller
         $response = [
             'uuid' => $uuid,
             'searched_name' => $request->input('name'),
-            'percentage_match' => $request->input('percent_match'),
+            'percent_match' => $request->input('percent_match'),
             'execution_status' => $executionStatus,
             'matches' => $matches,
             'message' => $executionStatus === 'records_found' ? 'Se encontraron ' . (count($matches)) . ' resultados.' : 'No se han encontrado resultados para tu búsqueda (' . $request->input('name') . ').'

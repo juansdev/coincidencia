@@ -20,7 +20,7 @@ class SearchLogFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'searched_name' => $this->faker->name,
-            'percentage_match' => $this->faker->randomNumber(),
+            'percent_match' => $this->faker->randomNumber(),
             'execution_status' => $this->faker->randomElement(["records_found", "no_matches", "system_error"]),
         ];
     }

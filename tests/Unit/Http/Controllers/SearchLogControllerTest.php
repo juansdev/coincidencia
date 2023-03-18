@@ -30,14 +30,14 @@ class SearchLogControllerTest extends TestCase
         $response->assertOk();
         $response->assertJsonFragment([
             'searched_name' => 'John',
-            'percentage_match' => 80,
+            'percent_match' => 80,
             'execution_status' => 'records_found',
             'message' => 'Se encontraron 1 resultados.'
         ]);
 
         $this->assertDatabaseHas('search_logs', [
             'searched_name' => 'John',
-            'percentage_match' => 80,
+            'percent_match' => 80,
             'execution_status' => 'records_found'
         ]);
         $this->assertDatabaseHas('search_log_person_publics', [
@@ -56,7 +56,7 @@ class SearchLogControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonFragment([
             'searched_name' => 'John',
-            'percentage_match' => 80,
+            'percent_match' => 80,
             'execution_status' => 'no_matches',
             'message' => 'No se han encontrado resultados para tu búsqueda (John).',
             'matches' => []
@@ -64,7 +64,7 @@ class SearchLogControllerTest extends TestCase
 
         $this->assertDatabaseHas('search_logs', [
             'searched_name' => 'John',
-            'percentage_match' => 80,
+            'percent_match' => 80,
             'execution_status' => 'no_matches'
         ]);
     }

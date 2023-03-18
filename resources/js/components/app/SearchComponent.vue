@@ -136,7 +136,7 @@ export default {
             handler(newResults) {
                 if (Object.keys(this.results).length) {
                     this.name = newResults.searched_name;
-                    this.percentMatch = newResults.percentage_match;
+                    this.percentMatch = newResults.percent_match;
                 }
             },
             immediate: true,

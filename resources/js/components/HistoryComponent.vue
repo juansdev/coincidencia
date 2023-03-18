@@ -32,7 +32,7 @@
                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">
                         {{ searchHistorical.searched_name }}
                     </th>
-                    <td class="px-6 py-4">{{ searchHistorical.percentage_match }}%</td>
+                    <td class="px-6 py-4">{{ searchHistorical.percent_match }}%</td>
                 </tr>
                 </tbody>
             </table>

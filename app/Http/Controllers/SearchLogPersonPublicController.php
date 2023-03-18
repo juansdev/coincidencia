@@ -28,11 +28,9 @@ class SearchLogPersonPublicController extends Controller
 
         $matches = [];
         foreach ($searchLogPersonPublics as $searchLogPersonPublic) {
-            $percentMatch = $searchLogPersonPublic->percent_match;
-
             $matches[] = [
                 'name' => $searchLogPersonPublic->personPublic->name,
-                'percent_match' => $percentMatch,
+                'percent_match' => $searchLogPersonPublic->percent_match,
                 'person_public' => $searchLogPersonPublic->personPublic
             ];
         }
@@ -42,7 +40,7 @@ class SearchLogPersonPublicController extends Controller
         $response = [
             'uuid' => $searchLog->uuid,
             'searched_name' => $searchLog->searched_name,
-            'percentage_match' => $searchLog->percentage_match,
+            'percent_match' => (float)$searchLog->percent_match,
             'execution_status' => $executionStatus,
             'matches' => $matches,
             'message' => $executionStatus === 'records_found' ? 'Se encontraron ' . (count($matches)) . ' resultados.' : 'No se han encontrado resultados para tu búsqueda (' . $searchLog->searched_name . ').'

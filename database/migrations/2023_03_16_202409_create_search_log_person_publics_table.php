@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('search_log_id')->constrained();
             $table->foreignId('person_public_id')->constrained();
+            $table->decimal('percent_match', 6, 3);
             $table->timestamps();
         });
     }
